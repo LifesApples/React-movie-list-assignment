@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import MovieForm from './components/MovieForm';
+import MovieList from './components/MovieList';
 
-// Använder React-komponent med state-hantering
+// Komponent med state-hantering
 function App() {
   const [movies, setMovies] = useState([]);
   const [newMovie, setNewMovie] = useState({ title: '', rating: '' });
@@ -23,7 +25,7 @@ function App() {
       return;
     }
     setMovies([...movies, newMovie]);
-    setNewMovie({ title: '', rating: '' }); // Återställer formuläret efter inskickning
+    setNewMovie({ title: '', rating: '' });
   };
 
   // Funktion för att ta bort en film från listan
@@ -54,47 +56,21 @@ function App() {
   return (
     <div className="container mt-5">
       <h1>Min filmlista</h1>
-      <h3>Lägg till en film</h3> 
-      <hr></hr>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label htmlFor="title" className="form-label">Titel:</label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            value={newMovie.title}
-            onChange={handleTitleChange}
-            placeholder="Titel här..."
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="rating" className="form-label">Betyg:</label>
-          <select
-            className="form-select"
-            id="rating"
-            value={newMovie.rating}
-            onChange={handleRatingChange}
-          >
-            <option value="">Välj betyg här...</option>
-            {[1, 2, 3, 4, 5].map(num => (
-              <option key={num} value={num}>{num}</option>
-            ))}
-          </select>
-        </div>
-        <button type="submit" className="btn btn-primary">Spara film</button>
-      </form>
-      <div className="mt-4">
-        <h2>Inlagda filmer</h2>
-        {movies.map((movie, index) => (
-          <div key={index} className="d-flex justify-content-between align-items-center bg-light m-1 rounded-1 p-1">
-            <div>{movie.title} {showStars(parseInt(movie.rating))}</div>
-            <button onClick={() => handleDelete(index)} className="btn btn-danger btn-sm">✖</button>
-          </div>
-        ))}
-        <button className="btn btn-primary m-1" onClick={sortAlphabetically}>Alfabetisk ordning</button>
-        <button className="btn btn-primary m-1" onClick={sortByRating}>Betygsordning</button>
-      </div>
+      <h3>Lägg till en film</h3>
+      <hr />
+      <MovieForm
+        newMovie={newMovie}
+        handleTitleChange={handleTitleChange}
+        handleRatingChange={handleRatingChange}
+        handleSubmit={handleSubmit}
+      />
+      <MovieList
+        movies={movies}
+        handleDelete={handleDelete}
+        sortAlphabetically={sortAlphabetically}
+        sortByRating={sortByRating}
+        showStars={showStars}
+      />
     </div>
   );
 }
